@@ -14,11 +14,10 @@ export default function Page(){
     const password = useAppSelector((state)=>state.accounts.password)
     const dispatch = useDispatch()
     const router = useRouter()
-
     const loginToAccount = async(e : FormEvent)=>{
         e.preventDefault()
         try{
-            const response = await fetch(`${url}users/login`,{
+            const response = await fetch(`http://localhost:3000/users/login`,{
                 method:"POST",
                 headers:{"Content-Type" : "application/json"},
                 body:JSON.stringify({
@@ -28,7 +27,6 @@ export default function Page(){
                 credentials:'include'   
             })
             const data = await response.json()
-            console.log(data)
             router.push('/dashboard')
             return response
         }catch(e){
