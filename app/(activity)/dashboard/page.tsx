@@ -57,7 +57,7 @@ export default function Page() {
 
   const fetchData = async () => {
     try {
-      const response = await fetch(`${url}/transaction`, {
+      const response = await fetch(`${url}transaction`, {
         method: "GET",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -76,7 +76,7 @@ export default function Page() {
   const addData = async (e: FormEvent) => {
     e.preventDefault();
     try {
-      const response = await fetch(`${url}/transaction`, {
+      const response = await fetch(`${url}transaction`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
