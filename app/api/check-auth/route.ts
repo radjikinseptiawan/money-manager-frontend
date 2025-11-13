@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 
 
 export async function GET() {
-  const token = (await cookies()).get("access_token"); // ✅ tambahkan await
+  const token = (await cookies()).get("access_token"); 
   console.log("TOKEN ACCEPTED!", token);
 
   if (!token) {

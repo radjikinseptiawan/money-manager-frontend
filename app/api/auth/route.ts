@@ -1,17 +1,20 @@
-import { cookies } from "next/headers"
+import { cookies } from 'next/headers';
+import { NextResponse } from 'next/server';
 
-export async function POST(req :Request){
-  const {access_token} = await req.json()
+export async function POST(req: Request) {
+  const { access_token } = await req.json();
+  console.log(access_token)
+  if (!access_token) {
+    return NextResponse.json({ success: false, message: 'No token provided' });
+  }
 
-  ;(await cookies()).set('access_token',access_token,{
-    httpOnly:true,
-    secure:true,
-    sameSite:'none',
-    path:'/',
-    maxAge:60 * 60 * 24 * 7    
-  })
+  (await cookies()).set('access_token', access_token, {
+    httpOnly: true,
+    secure: true,
+    sameSite: 'lax',
+    path: '/',
+    maxAge: 60 * 60 * 24, // 1 day
+  });
 
-  return Response.json({
-    success:true
-  })
+  return NextResponse.json({ success: true });
 }

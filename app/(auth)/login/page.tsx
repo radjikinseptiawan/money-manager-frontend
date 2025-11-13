@@ -8,7 +8,6 @@ import '../auth.css'
 import { useRouter } from "next/navigation"
 import UsernameInput from "@/app/component/usernameInput"
 
-const url : string = 'https://project-manager-api-theta.vercel.app/'
 export default function Page(){
     const username = useAppSelector((state)=>state.accounts.username)
     const password = useAppSelector((state)=>state.accounts.password)
@@ -17,7 +16,7 @@ export default function Page(){
     const loginToAccount = async(e : FormEvent)=>{
         e.preventDefault()
         try{
-            const response = await fetch(`${url}users/login`,{
+            const response = await fetch(`http://localhost:3000/users/login`,{
                 method:"POST",
                 headers:{"Content-Type" : "application/json"},
                 body:JSON.stringify({
@@ -26,10 +25,11 @@ export default function Page(){
                 }),
             })
             const data = await response.json()
+                console.log(data.access_token.access_token)
             await fetch('/api/auth',{
                 method:"POST",
                 headers:{"Content-Type" : "application/json"},
-                body:JSON.stringify({access_token : data.token.access_token})
+                body:JSON.stringify({access_token : data.access_token.access_token})
             })
 
             localStorage.setItem("access_token",data.token.access_token)

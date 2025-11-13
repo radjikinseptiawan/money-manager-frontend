@@ -1,85 +1,71 @@
 "use client";
-import Navbar from "@/app/component/navigation/navbar";
+import { useAppDispatch, useAppSelector } from "@/app/hooks";
+import {
+  setDateTransaction,
+  setDetailTransaction,
+  setNominalTransaction,
+  setNominalType,
+} from "@/app/features/newTransactionSlice";
 import NewTransaction from "@/app/component/newTransaction";
 import TableTransaction from "@/app/component/tableData";
-import { setDateTransaction, setDetailTransaction, setNominalTransaction, setNominalType } from "@/app/features/newTransactionSlice";
-import { useAppDispatch, useAppSelector } from "@/app/hooks";
-import { useRouter } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
+import { CartesianGrid, Legend, Line, Tooltip, XAxis, YAxis, LineChart } from "recharts";
+
+interface TransactionItem {
+  nominal_transaction: number;
+  transaction_id: string;
+  jenis: string;
+  transaction_date: string;
+  detail_transaction: string;
+}
 
 interface Transaction {
-  total_pemasukkan:string | number,
-  total_pengeluaran:string | number,
-  rata_rata_pemasukkan:string,
-  rata_rata_pengeluaran:string,
-  transaksi:[
-    {
-    nominal_transaction: number;
-    transaction_id: string;
-    jenis: string;
-    transaction_date: string;
-    detail_transaction: string;
-    }
-  ]
+  total_pemasukkan: number | string;
+  total_pengeluaran: number | string;
+  rata_rata_pemasukkan: any; // sesuaikan tipe jika perlu
+  rata_rata_pengeluaran: any;
+  transaksi: TransactionItem[] | null;
 }
-const url : string = 'https://project-manager-api-theta.vercel.app/'
 
 export default function Page() {
-  const detailTransaction = useAppSelector((state) => state.transaction.detailTransaction);
-  const nominalType = useAppSelector((state) => state.transaction.nominalType);
-  const nominalTransaction = useAppSelector((state) => state.transaction.nominalTransaction);
-  const dateTransaction = useAppSelector((state) => state.transaction.dateTransaction);
-  const [transaction, setTransaction] = useState<Transaction | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [open, setOpen] = useState<boolean>(false);
   const dispatch = useAppDispatch();
-  const router = useRouter()
+  const nominalType = useAppSelector((s) => s.transaction.nominalType);
+  const nominalTransaction = useAppSelector((s) => s.transaction.nominalTransaction);
+  const detailTransaction = useAppSelector((s) => s.transaction.detailTransaction);
+  const dateTransaction = useAppSelector((s) => s.transaction.dateTransaction);
 
-  const formattedMoney = (digit : any)=>{
-    return new Intl.NumberFormat("id-ID").format(digit)
-  }
+  const [transaction, setTransaction] = useState<Transaction | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [open, setOpen] = useState(false);
 
-  const deleteTransaction = async(item : string)=>{
-    try{
-      const response = await fetch(`${url}transaction/${item}`,{
-        method:"DELETE",
-        credentials:"include"
-      })
+  const formattedMoney = (n: any) => new Intl.NumberFormat("id-ID").format(n ?? 0);
 
-      if(!response.ok) console.log("Failed to delete data!")
-      
-      window.location.reload()
-      }catch(e){
-      console.error(e)
-    }
-  }
-
-
-  const fetchData = async () => {
+  async function fetchData() {
     try {
-      const response = await fetch(`${url}transaction`, {
-        method: "GET",
-        headers: { 
-          "Content-Type": "application/json",
-         },
+      setLoading(true);
+      const res = await fetch(`http://localhost:3000/transaction`, {
         credentials: "include",
       });
-      const data = await response.json();
-      setTransaction(data.data);
-      console.log(data)
-      setLoading(false);
+      if (!res.ok) throw new Error("Fetch failed");
+      const data = await res.json();
+      // Pastikan struktur data sesuai: data.data.transaksi => array
+      setTransaction(data.data ?? null);
     } catch (e) {
-      console.error(e);
+      console.error("fetchData error:", e);
+      setTransaction(null);
+    } finally {
+      setLoading(false);
     }
-  };
+  }
 
   useEffect(() => {
     fetchData();
   }, []);
-  const addData = async (e: FormEvent) => {
+
+  async function addData(e: FormEvent) {
     e.preventDefault();
     try {
-      const response = await fetch(`${url}transaction`, {
+      const res = await fetch(`http://localhost:3000/transaction`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -90,45 +76,100 @@ export default function Page() {
           detail_transaction: detailTransaction,
         }),
       });
-      const data = await response.json();
-      console.log(data)
-      dispatch(setNominalType("..."));
-      dispatch(setDateTransaction(""));
-      dispatch(setDetailTransaction(""));
-      dispatch(setNominalTransaction(""));
-      setOpen(false);
-      window.location.reload();
+
+      if (res.ok) {
+        await fetchData();
+        setOpen(false);
+        dispatch(setNominalTransaction(""));
+        dispatch(setNominalType("..."));
+        dispatch(setDateTransaction(""));
+        dispatch(setDetailTransaction(""));
+      } else {
+        console.error("Add transaction failed");
+      }
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
-  };
+  }
+
+  async function deleteTransaction(id: string) {
+    try {
+      const res = await fetch(`http://localhost:3000/transaction/${id}`, {
+        method: "DELETE",
+        credentials: "include",
+      });
+
+      if (res.ok) {
+        setTransaction((prev) =>
+          prev
+            ? { ...prev, transaksi: prev.transaksi?.filter((t) => t.transaction_id !== id) ?? null }
+            : prev
+        );
+      } else {
+        console.error("Delete failed");
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  const transactionsArray: TransactionItem[] = Array.isArray(transaction?.transaksi)
+    ? transaction!.transaksi!
+    : [];
+
+  transactionsArray.sort((a,b)=>new Date(b.transaction_date).getTime() - new Date(a.transaction_date).getTime() )
+  const chartData = transactionsArray.length
+    ? transactionsArray.slice(0, 12).map((t, i) => ({
+        name: `#${i + 1}`,
+        pemasukkan: t.jenis === "pemasukkan" ? t.nominal_transaction : 0,
+        pengeluaran: t.jenis === "pengeluaran" ? t.nominal_transaction : 0,
+      }))
+    : [
+        { name: "Jan", pemasukkan: 0, pengeluaran: 0 },
+        { name: "Feb", pemasukkan: 0, pengeluaran: 0 },
+      ];
 
   return (
-    <div className={`p-6 w-full min-h-screen bg-[#0d1117] mt-20 text-white ${open ? "bg-black/10" : ""}`}>
+    <div className={`p-6 w-full min-h-screen bg-[#0d1117] mt-20 text-white`}>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 mb-6">
         {[
-          { title: "Total Aset", value: formattedMoney(Number(transaction?.total_pemasukkan) - Number(transaction?.total_pengeluaran)) },
-          { title: "Total Pemasukkan", value: formattedMoney(transaction?.total_pemasukkan)  ?? 0},
-          { title: "Total Pengeluaran", value: formattedMoney(transaction?.total_pengeluaran) ?? 0},
-          { title: "Rata-rata Pemasukkan", value: formattedMoney(transaction?.rata_rata_pemasukkan) ?? 0 },
-          { title: "Rata-rata Pengeluaran", value: formattedMoney(transaction?.rata_rata_pengeluaran) ?? 0},
+          {
+            title: "Total Aset",
+            value:
+              Number(transaction?.total_pemasukkan || 0) -
+              Number(transaction?.total_pengeluaran || 0),
+          },
+          { title: "Total Pemasukkan", value: transaction?.total_pemasukkan ?? 0 },
+          { title: "Total Pengeluaran", value: transaction?.total_pengeluaran ?? 0 },
+          { title: "Rata-rata Pemasukkan", value: transaction?.rata_rata_pemasukkan ?? 0 },
+          { title: "Rata-rata Pengeluaran", value: transaction?.rata_rata_pengeluaran ?? 0 },
         ].map((stat, i) => (
           <div
             key={i}
-            className="bg-[#161b22] p-4 
-            rounded-xl border border-blue-800 
-            hover:border-blue-400 transition-all 
-            shadow-md hover:shadow-blue-500/10"
+            className="bg-[#161b22] p-4 rounded-xl border border-blue-800 hover:border-blue-400 transition-all shadow-md hover:shadow-blue-500/10"
           >
             <p className="text-sm text-gray-400">{stat.title}</p>
-            <p className="text-2xl font-semibold text-blue-400">Rp. {stat.value}</p>
+            <p className="text-2xl font-semibold text-blue-400">Rp. {formattedMoney(stat.value)}</p>
           </div>
         ))}
       </div>
 
+      <h2 className="font-bold mb-2 text-blue-800 text-xl">Statistik Keuangan</h2>
+      <div className="bg-[#161b22] rounded-xl flex justify-center p-4 mb-6 border border-blue-800">
+        <LineChart width={800} responsive height={300} data={chartData}>
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="name" />
+          <YAxis />
+          <Tooltip />
+          <Legend />
+          <Line type="monotone" dataKey="pemasukkan" stroke="#22d3ee" />
+          <Line type="monotone" dataKey="pengeluaran" stroke="#f87171" />
+        </LineChart>
+      </div>
+
       <div className="flex justify-end mb-4">
         <button
-          onClick={() => setOpen(!open)}
+          onClick={() => setOpen(true)}
           className="bg-blue-500 hover:bg-blue-600 active:scale-95 transition-transform text-white px-5 py-2 rounded-lg font-semibold shadow-md hover:shadow-blue-500/20"
         >
           + Buat Transaksi
@@ -136,7 +177,7 @@ export default function Page() {
       </div>
 
       {open && (
-        <div className="absolute inset-0 bg-black/70 flex justify-center items-center z-20">
+        <div className="fixed inset-0 bg-black/70 flex justify-center items-center z-20">
           <NewTransaction
             cancelBtn={() => setOpen(false)}
             submitForm={addData}
@@ -151,51 +192,49 @@ export default function Page() {
         </div>
       )}
 
-      <div className="bg-[#161b22] p-4 h-96 rounded-xl border border-blue-800 shadow-lg">
+      <div className="bg-[#161b22] p-4 rounded-xl border border-blue-800 shadow-lg">
         <TableTransaction>
-          {loading
-            ? Array.from({ length: 5 }).map((_, i) => (
-                <tr key={i} className="animate-pulse border-b border-blue-900/20">
-                  {[...Array(5)].map((__, j) => (
-                    <td key={j} className="px-6 py-4">
-                      <div className="h-4 w-24 bg-gray-700 rounded"></div>
-                    </td>
-                  ))}
-                </tr>
-              ))
-            : (transaction?.transaksi ?? []).length > 0
-            ? transaction?.transaksi.map((item, index) => (
-                <tr
-                  key={item.transaction_id}
-                  className="hover:bg-blue-950/40 transition-all border-b border-blue-900/20"
+          {loading ? (
+            <tr>
+              <td colSpan={6} className="text-center text-gray-500 py-6">
+                Loading...
+              </td>
+            </tr>
+          ) : transactionsArray.length > 0 ? (
+            transactionsArray.map((item, i) => (
+              <tr
+                key={item.transaction_id}
+                className="hover:bg-blue-950/40 transition-all border-b border-blue-900/20"
+              >
+                <td className="px-6 py-4">{i + 1}</td>
+                <td
+                  className={`px-6 py-4 font-semibold ${
+                    item.jenis === "pemasukkan" ? "text-green-400" : "text-red-400"
+                  }`}
                 >
-                  <td className="px-6 py-4">{index + 1}</td>
-                  <td
-                    className={`px-6 py-4 ${
-                      item.jenis === "pemasukkan" ? "text-green-400" : "text-red-400"
-                    } font-semibold`}
+                  Rp. {item.jenis === "pemasukkan" ? "+" : "-"}
+                  {formattedMoney(item.nominal_transaction)}
+                </td>
+                <td className="px-6 py-4 capitalize">{item.jenis}</td>
+                <td className="px-6 py-4">{item.transaction_date}</td>
+                <td className="px-6 py-4">{item.detail_transaction}</td>
+                <td className="px-6 py-4">
+                  <button
+                    onClick={() => deleteTransaction(item.transaction_id)}
+                    className="px-4 py-2 bg-red-500 hover:bg-red-600 rounded-lg text-white font-semibold transition-all"
                   >
-                    Rp. {item.jenis === "pemasukkan" ? "+" : "-"}{formattedMoney(item.nominal_transaction)}
-                  </td>
-                  <td className="px-6 py-4 capitalize">{item.jenis}</td>
-                  <td className="px-6 py-4">{item.transaction_date}</td>
-                  <td className="px-6 py-4">{item.detail_transaction}</td>
-                  <td className="px-6 py-4"><button 
-                  className="
-                  px-4 py-2 bg-red-500 
-                  hover:bg-red-600 
-                  text-white font-semibold rounded-lg transition-all shadow-md 
-                  shadow-red-800/30"
-                  onClick={()=>deleteTransaction(item.transaction_id)}>Delete</button></td>
-                </tr>
-              ))
-            : (
-              <tr>
-                <td colSpan={5} className="text-center bg-[#0f1629] text-gray-400 py-6">
-                  Tidak ada data transaksi.
+                    Delete
+                  </button>
                 </td>
               </tr>
-            )}
+            ))
+          ) : (
+            <tr>
+              <td colSpan={6} className="text-center text-gray-500 py-6">
+                Tidak ada data transaksi.
+              </td>
+            </tr>
+          )}
         </TableTransaction>
       </div>
     </div>

@@ -2,11 +2,12 @@ import { NextRequest, NextResponse } from "next/server";
 import jwt from 'jsonwebtoken';
 
 export const config = {
+  runtime:"nodejs",
   matcher: ['/dashboard/:path*']
 };
-export function proxy(req: NextRequest) {
+export function middleware(req: NextRequest) {
   const token = req.cookies.get('access_token')?.value;
-
+  console.log(token)
   if (!token) {
     return NextResponse.redirect(new URL('/login', req.url));
   }

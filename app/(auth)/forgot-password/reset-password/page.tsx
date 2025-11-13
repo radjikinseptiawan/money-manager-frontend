@@ -23,7 +23,7 @@ export function ResetPassword(){
     const generateOTPCode = async (e : FormEvent)=>{
         e.preventDefault()
         try{
-            const response = await fetch(`${url}users/new_password` ||`http://localhost:3000/users/new_password`,{
+            const response = await fetch(`http://localhost:3000/users/new_password`,{
                 method : "POST",
                 headers: {
                     "Content-Type" : "application/json"
