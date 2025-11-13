@@ -64,6 +64,7 @@ export default function Page() {
       });
       const data = await response.json();
       setTransaction(data.data);
+      console.log(data)
       setLoading(false);
     } catch (e) {
       console.error(e);
@@ -87,7 +88,8 @@ export default function Page() {
           detail_transaction: detailTransaction,
         }),
       });
-      await response.json();
+      const data = await response.json();
+      console.log(data)
       dispatch(setNominalType("..."));
       dispatch(setDateTransaction(""));
       dispatch(setDetailTransaction(""));
