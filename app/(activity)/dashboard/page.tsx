@@ -41,7 +41,7 @@ export default function Page() {
 
   const deleteTransaction = async(item : string)=>{
     try{
-      const response = await fetch(`${url}transaction/${item}`,{
+      const response = await fetch(`$http://localhost:3000/transaction/${item}`,{
         method:"DELETE",
         credentials:"include"
       })
@@ -57,7 +57,7 @@ export default function Page() {
 
   const fetchData = async () => {
     try {
-      const response = await fetch(`${url}transaction`, {
+      const response = await fetch(`http://localhost:3000/transaction`, {
         method: "GET",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -77,7 +77,7 @@ export default function Page() {
   const addData = async (e: FormEvent) => {
     e.preventDefault();
     try {
-      const response = await fetch(`${url}transaction`, {
+      const response = await fetch(`http://localhost:3000/transaction`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",

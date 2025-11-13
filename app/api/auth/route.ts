@@ -5,8 +5,8 @@ export async function POST(req :Request){
 
   ;(await cookies()).set('access_token',access_token,{
     httpOnly:true,
-    secure:true,
-    sameSite:'none',
+    secure:false,
+    sameSite:'lax',
     path:'/',
     maxAge:60 * 60 * 24 * 7    
   })
