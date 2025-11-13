@@ -1,7 +1,7 @@
 import { cookies } from "next/headers";
 import jwt from "jsonwebtoken";
+import { NextResponse } from "next/server";
 
-const JWT_SECRET = "RadjikinSeptiawan123";
 
 export async function GET() {
   const token = (await cookies()).get("access_token"); // ✅ tambahkan await
@@ -12,11 +12,11 @@ export async function GET() {
   }
 
   try {
-    const data = jwt.verify(token.value, JWT_SECRET);
+    const data = jwt.verify(token.value, process.env.JWT_SECRET as string);
     const tokenStore = token.value;
-    return Response.json({ authenticated: true, tokenStore, data });
+    return NextResponse.json({ authenticated: true, tokenStore, data });
   } catch (e: any) {
-    return Response.json({
+    return NextResponse.json({
       message: "Failed",
       error: e.message,
     });
