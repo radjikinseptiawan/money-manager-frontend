@@ -5,7 +5,7 @@ export const config = {
   matcher: ['/dashboard/:path*']
 };
 export function proxy(req: NextRequest) {
-  const token = req.cookies.get('access_token')?.value;
+  const token = req.cookies.get('access_token');
 
   if (!token) {
     return NextResponse.redirect(new URL('/login', req.url));
