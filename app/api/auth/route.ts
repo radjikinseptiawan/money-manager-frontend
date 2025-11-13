@@ -1,4 +1,6 @@
- import { cookies } from "next/headers"; import jwt from "jsonwebtoken"; import { NextResponse } from "next/server"; export async function GET() { 
+ import { cookies } from "next/headers"; import jwt from "jsonwebtoken"; import { NextResponse } from "next/server"; 
+ 
+ export async function GET() { 
   const token = (await cookies()).get("access_token"); // ✅ tambahkan await 
   console.log("TOKEN ACCEPTED!", token); 
   if (!token) { return Response.json({ authenticated: false }); } 
