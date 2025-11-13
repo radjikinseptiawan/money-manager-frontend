@@ -22,6 +22,7 @@ interface Transaction {
     }
   ]
 }
+const url : string = 'https://project-manager-api-theta.vercel.app/'
 
 export default function Page() {
   const detailTransaction = useAppSelector((state) => state.transaction.detailTransaction);
@@ -38,31 +39,9 @@ export default function Page() {
     return new Intl.NumberFormat("id-ID").format(digit)
   }
 
-  useEffect(()=>{
-    const checkAuth = async()=>{
-      try{
-        const res = await fetch('http://localhost:3001/api/check-auth',{
-          method:"GET",
-          credentials:"include"
-
-        })
-          console.log("Check auth status:", res.status)
-        if(!res.ok){
-          console.log("redirect...")
-          router.push("/login")
-        }
-      }catch(e){
-        router.push('/login')
-      }
-    }
-
-    checkAuth()
-  },[])
-
-
   const deleteTransaction = async(item : string)=>{
     try{
-      const response = await fetch(`http://localhost:3000/transaction/${item}`,{
+      const response = await fetch(`${url}transaction/${item}`,{
         method:"DELETE",
         credentials:"include"
       })
@@ -78,7 +57,7 @@ export default function Page() {
 
   const fetchData = async () => {
     try {
-      const response = await fetch("http://localhost:3000/transaction", {
+      const response = await fetch(`${url}/transaction`, {
         method: "GET",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -97,7 +76,7 @@ export default function Page() {
   const addData = async (e: FormEvent) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:3000/transaction", {
+      const response = await fetch(`${url}/transaction`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
