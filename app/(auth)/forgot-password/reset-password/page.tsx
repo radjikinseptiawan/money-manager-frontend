@@ -3,11 +3,19 @@ import PasswordInput from "@/app/component/passwordInput";
 import { setPassword } from "@/app/features/accountSlice";
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import { redirect, useSearchParams } from "next/navigation";
-import { FormEvent } from "react";
+import { FormEvent, Suspense } from "react";
 import '../../auth.css'
 
 const url : string = 'https://project-manager-api-theta.vercel.app/'
+
 export default function Page(){
+    return(
+        <Suspense>
+            <ResetPassword></ResetPassword>
+        </Suspense>
+    )
+}
+export function ResetPassword(){
     const password = useAppSelector((state)=>state.accounts.password)
     const dispatch = useAppDispatch()
     const searchParams = useSearchParams()

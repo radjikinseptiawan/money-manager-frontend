@@ -3,10 +3,18 @@ import { setEmail } from "@/app/features/accountSlice";
 import { setOtp } from "@/app/features/otpSlice";
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import { useParams, useSearchParams } from "next/navigation";
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, Suspense, useEffect, useState } from "react";
 import '../../auth.css'
 const url : string = 'https://project-manager-api-theta.vercel.app/'
 export default function Page(){
+    return(
+        <Suspense>
+            <Code/>
+        </Suspense>
+    )
+}
+
+export function Code(){
     const code = useAppSelector((state)=>state.otp.code)
     const dispatch = useAppDispatch()
     const searchParams = useSearchParams()
