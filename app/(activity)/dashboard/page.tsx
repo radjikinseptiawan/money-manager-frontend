@@ -59,7 +59,9 @@ export default function Page() {
     try {
       const response = await fetch(`${url}transaction`, {
         method: "GET",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+          "Content-Type": "application/json",
+         },
         credentials: "include",
       });
       const data = await response.json();
