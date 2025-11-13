@@ -17,16 +17,22 @@ export default function Page(){
     const loginToAccount = async(e : FormEvent)=>{
         e.preventDefault()
         try{
-            const response = await fetch(`${url}users/login`,{
+            const response = await fetch(`http://localhost:3000/users/login`,{
                 method:"POST",
                 headers:{"Content-Type" : "application/json"},
                 body:JSON.stringify({
                     username: username,
                     password: password
                 }),
-                credentials:'include'   
             })
             const data = await response.json()
+            
+            await fetch('/api/auth',{
+                method:"POST",
+                headers:{"Content-Type" : "application/json"},
+                body:JSON.stringify({access_token : data.token.access_token})
+            })
+
             router.push('/dashboard')
             return response
         }catch(e){
