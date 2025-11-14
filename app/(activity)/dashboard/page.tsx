@@ -22,8 +22,12 @@ interface TransactionItem {
 interface Transaction {
   total_pemasukkan: number | string;
   total_pengeluaran: number | string;
-  rata_rata_pemasukkan: any; // sesuaikan tipe jika perlu
+  rata_rata_pemasukkan: any; 
   rata_rata_pengeluaran: any;
+  pemasukkan_tertinggi: number | string;
+  pemasukkan_terendah: number | string;
+  pengeluaran_tertinggi:number|string;
+  pengeluaran_terendah:number|string;
   transaksi: TransactionItem[] | null;
 }
 
@@ -117,18 +121,21 @@ export default function Page() {
     ? transaction!.transaksi!
     : [];
 
-  transactionsArray.sort((a,b)=>new Date(b.transaction_date).getTime() - new Date(a.transaction_date).getTime() )
+  const monthData = ['Januari','Febuari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember']
+
+  // transactionsArray.sort((a,b)=>new Date(b.transaction_date).getTime() - new Date(a.transaction_date).getTime())
   const chartData = transactionsArray.length
     ? transactionsArray.slice(0, 12).map((t, i) => ({
-        name: `#${i + 1}`,
+        date:monthData[new Date(t.transaction_date).getMonth()],
         pemasukkan: t.jenis === "pemasukkan" ? t.nominal_transaction : 0,
         pengeluaran: t.jenis === "pengeluaran" ? t.nominal_transaction : 0,
       }))
     : [
-        { name: "Jan", pemasukkan: 0, pengeluaran: 0 },
-        { name: "Feb", pemasukkan: 0, pengeluaran: 0 },
+        { date: "Januari", pemasukkan: 0, pengeluaran: 0 },
+        { date: "Febuari", pemasukkan: 0, pengeluaran: 0 },
       ];
-
+    
+      console.log(transaction)
   return (
     <div className={`p-6 w-full min-h-screen bg-[#0d1117] mt-20 text-white`}>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 mb-6">
@@ -156,15 +163,32 @@ export default function Page() {
 
       <h2 className="font-bold mb-2 text-blue-800 text-xl">Statistik Keuangan</h2>
       <div className="bg-[#161b22] rounded-xl flex justify-center p-4 mb-6 border border-blue-800">
-        <LineChart width={800} responsive height={300} data={chartData}>
+        <LineChart responsive height={300} data={chartData} className=" p-2 w-72 md:w-xl  rounded-md bg-[#252c36]">
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" />
+          <XAxis dataKey="date" />
           <YAxis />
           <Tooltip />
           <Legend />
-          <Line type="monotone" dataKey="pemasukkan" stroke="#22d3ee" />
-          <Line type="monotone" dataKey="pengeluaran" stroke="#f87171" />
+          <Line type="monotone" dataKey="pemasukkan" stroke="#002ae3" />
+          <Line type="monotone" dataKey="pengeluaran" stroke="#e30008" />
         </LineChart>
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-5 mx-10 items-center justify-center">
+  {[
+    { title: "Pemasukkan Tertinggi",jenis:"pemasukkan", value: transaction?.pemasukkan_tertinggi ?? 0},
+    { title: "Pengeluaran Tertinggi",jenis:"pengeluaran", value:transaction?.pengeluaran_tertinggi ?? 0},
+    { title: "Pemasukkan Terendah",jenis:"pemasukkan", value: transaction?.pemasukkan_terendah ?? 0},
+    { title: "Pengeluaran Terendah",jenis:"pengeluaran", value: transaction?.pengeluaran_terendah ?? 0},
+  ].map((item, idx) => (
+    <div
+      key={idx}
+      className="bg-[#161b22] p-2 rounded-xl w-30 md:w-52 border border-blue-800 shadow-md hover:shadow-blue-500/10 transition-all"
+    >
+      <h1 className="text-sm text-gray-400 mb-1">{item.title}</h1>
+      <p className={`text-sm md:text-xl font-semibold ${item.jenis === "pemasukkan" ? "text-green-500" : "text-red-500"}`}>Rp.{item.jenis === "pemasukkan"? "+" :"-"} {formattedMoney(item.value)}</p>
+    </div>
+  ))}
+</div>
       </div>
 
       <div className="flex justify-end mb-4">

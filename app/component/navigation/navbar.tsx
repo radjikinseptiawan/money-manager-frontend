@@ -1,34 +1,63 @@
-import { ReactNode } from "react";
+"use client"
+
+import { ReactNode, useState } from "react";
 
 export default function Navbar({ children }: { children?: ReactNode }) {
-  const logoutAccount = async()=>{
+  const [open, setOpen] = useState<boolean>(false);
+  const setLogout = async()=>{
     try{
-      const response = await fetch("http://localhost:3000/users/logout",{
-        method:"POST"
+      const response = await fetch("/api/auth",{
+        method:"DELETE",
       })
-      
-      if (response.ok) {
-      window.location.href = "/login";
-    } else {
-      console.error("Gagal logout!");
-    }
+
+      if(!response.ok){
+        return 
+      }
+
+      return window.location.reload()
     }catch(e){
-      console.error(e)
+      console.log(e)
+      return
     }
   }
-
   return (
-    <nav className="bg-[#161B22] w-full fixed top-0 z-10 p-3 flex justify-between items-center shadow-md">
-      <div className="text-white font-bold text-lg">
-        Zever<span className="text-blue-500">ial</span>
-      </div>
+    <>
+      <nav className="bg-[#161B22] w-full fixed top-0 z-20 p-3 flex justify-between items-center shadow-md">
+        <div className="text-white font-bold text-lg">
+          Zever<span className="text-blue-500">ial</span>
+        </div>
 
-      <div className="hidden md:flex gap-6 text-gray-300">
-        <a href="#" className="hover:text-white transition-colors">Home</a>
-        <a href="#" className="hover:text-white transition-colors">About</a>
-        <a href="#" className="hover:text-white transition-colors" onClick={logoutAccount}>logout</a>
-      </div>
+        <button onClick={() => setOpen(true)}>
+          <img src="menu.svg" alt="menu" />
+        </button>
+      </nav>
 
-    </nav>
+      {open && (
+        <div
+          className="fixed inset-0 bg-black/50 z-10"
+          onClick={() => setOpen(false)}
+        />
+      )}
+
+      <div
+        className={`
+          fixed top-0 right-0 h-full w-72 bg-[#161B22] shadow-lg z-20
+          transform transition-transform duration-300
+          ${open ? "translate-x-0" : "translate-x-full"}
+        `}
+      >
+        <div className="flex justify-between items-center p-4 border-b border-blue-900">
+          <h1 className="text-white text-lg font-semibold">Menu</h1>
+          <button onClick={() => setOpen(false)} className="text-white text-xl">
+            ✕
+          </button>
+        </div>
+
+        <ul className="text-white p-4 space-y-4">
+          <li className="cursor-pointer hover:text-blue-400" onClick={()=>window.location.href = "/dashboard"}>Dashboard</li>
+          <li className="cursor-pointer hover:text-blue-400" onClick={setLogout}>Logout</li>
+        </ul>
+      </div>
+    </>
   );
 }

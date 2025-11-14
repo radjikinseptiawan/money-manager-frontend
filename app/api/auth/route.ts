@@ -15,6 +15,12 @@ export async function POST(req: Request) {
     path: '/',
     maxAge: 60 * 60 * 24, // 1 day
   });
+  return NextResponse.json({ success: true,message:"Success to login",authorized:true });
+}
 
-  return NextResponse.json({ success: true });
+
+export async function DELETE(req: Request){
+    (await cookies()).delete("access_token")
+
+    return NextResponse.json({success:true,message:"Success to log out",authorized:false})
 }

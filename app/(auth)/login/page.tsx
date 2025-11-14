@@ -32,7 +32,7 @@ export default function Page(){
                 body:JSON.stringify({access_token : data.access_token.access_token})
             })
 
-            localStorage.setItem("access_token",data.token.access_token)
+            localStorage.setItem("access_token",data.access_token.access_token)
 
             router.push('/dashboard')
             return response
