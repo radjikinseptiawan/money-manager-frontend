@@ -21,7 +21,14 @@ export async function POST(req: Request) {
 
 
 export async function DELETE(req: Request){
-    (await cookies()).delete("access_token")
+    (await cookies()).set("access_token","",{
+      httpOnly:true,
+      secure:true,
+      sameSite:'none',
+      path:"/",
+      domain:".zeverial.online",
+      maxAge:0
+    })
 
     return NextResponse.json({success:true,message:"Success to log out",authorized:false})
 }
