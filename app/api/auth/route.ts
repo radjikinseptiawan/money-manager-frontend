@@ -13,6 +13,7 @@ export async function POST(req: Request) {
     secure: true,
     sameSite: 'none',
     path: '/',
+    domain:".zeverial.online",
     maxAge: 60 * 60 * 24, // 1 day
   });
   return NextResponse.json({ success: true,message:"Success to login",authorized:true });
