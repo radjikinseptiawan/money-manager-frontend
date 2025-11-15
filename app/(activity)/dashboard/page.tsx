@@ -80,6 +80,7 @@ export default function Page() {
         }),
       });
 
+        console.log(res)
       if (res.ok) {
         await fetchData();
         setOpen(false);
@@ -134,7 +135,6 @@ export default function Page() {
         { date: "Febuari", pemasukkan: 0, pengeluaran: 0 },
       ];
     
-      console.log(transaction)
   return (
     <div className={`p-6 w-full min-h-screen bg-[#0d1117] mt-20 text-white`}>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 mb-6">
