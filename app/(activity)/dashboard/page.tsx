@@ -109,6 +109,7 @@ export default function Page() {
             ? { ...prev, transaksi: prev.transaksi?.filter((t) => t.transaction_id !== id) ?? null }
             : prev
         );
+        window.location.reload();
       } else {
         console.error("Delete failed");
       }
