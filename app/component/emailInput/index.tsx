@@ -1,10 +1,12 @@
 import { ChangeEvent, useState } from "react"
 
+export const emailRegex =/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9-]{2,}(\.[a-zA-Z]{2,3})+$/;
+  
+
 export default function EmailInput({values,changer}:{
     changer: (e :ChangeEvent<HTMLInputElement>)=>void
     values:string
 }){
-     const emailRegex =/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9-]{2,}(\.[a-zA-Z]{2,3})+$/;
     const [error,setError] = useState('')
      const emailInputValidation = (e: ChangeEvent<HTMLInputElement>)=>{
         const value = e.target.value

@@ -3,7 +3,7 @@ import { setEmail } from "@/app/features/accountSlice";
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import { FormEvent } from "react";
 import '../auth.css'
-import EmailInput from "@/app/component/emailInput";
+import EmailInput, { emailRegex } from "@/app/component/emailInput";
 const url : string = 'https://project-manager-api-theta.vercel.app/'
 export default function Page(){
     const email = useAppSelector((state)=>state.accounts.email)
@@ -12,6 +12,10 @@ export default function Page(){
     const generateOTPCode = async (e : FormEvent)=>{
         e.preventDefault()
         try{    
+            if(!emailRegex.test(email)){
+                alert("Email tidak valid")
+                return
+            }
             const response = await fetch(`https://api.zeverial.online/users/forgot-password?email=${email}`,{
                 method : "GET",
                 headers: {

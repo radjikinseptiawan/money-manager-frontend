@@ -1,11 +1,11 @@
 "use client"
-import PasswordInput from "@/app/component/passwordInput"
+import PasswordInput, { passwordRegex } from "@/app/component/passwordInput"
 import { setConfirmPassword, setEmail, setPassword, setUsername } from "@/app/features/accountSlice"
 import { useAppSelector } from "@/app/hooks"
 import { FormEvent } from "react"
 import { useDispatch } from "react-redux"
 import '../auth.css'
-import EmailInput from "@/app/component/emailInput"
+import EmailInput, { emailRegex } from "@/app/component/emailInput"
 import UsernameInput from "@/app/component/usernameInput"
 const url : string = 'https://project-manager-api-theta.vercel.app/'
 export default function Page(){
@@ -18,6 +18,21 @@ export default function Page(){
     const submitAccounts = async (e: FormEvent)=>{
         e.preventDefault()
         try{
+            if(!emailRegex.test(email)){
+                alert("Format email tidak valid")
+                return
+            }
+
+            if(password !== confirmPassword){
+                alert("Password tidak sama")
+                return
+            }
+
+            if(!passwordRegex.test(password)){
+                alert("password tidak memenuhi persyaratan!")
+                return
+            }
+
             const response = await fetch('https://api.zeverial.online/users/register',{
                 method:"POST",
                 headers:{"Content-Type" : "application/json"},
@@ -28,6 +43,7 @@ export default function Page(){
                 })
             })
             const data = await response.json();
+            console.log(data)
             if(!response.ok){
                 return response
             }   
@@ -56,7 +72,7 @@ export default function Page(){
                 
                 <div className="flex flex-col my-4 items-center">
                 <button className="bg-blue-400 transition-all hover:bg-blue-600 cursor-pointer hover:text-blue-900 p-2 text-white font-bold my-2 rounded-md">Register</button>
-                <a href="/login" className="text-blue-400 text-center hover:underline transition-all hover:text-blue-600">Dont have an account? click here!</a>
+                <a href="/login" className="text-blue-400 text-center hover:underline transition-all hover:text-blue-600">Sudah punya akun? Klik disini!</a>
                 </div>
 
                 </form>

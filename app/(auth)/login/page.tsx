@@ -1,5 +1,5 @@
 "use client"
-import PasswordInput from "@/app/component/passwordInput"
+import PasswordInput, { passwordRegex } from "@/app/component/passwordInput"
 import { setPassword, setUsername } from "@/app/features/accountSlice"
 import { useAppSelector } from "@/app/hooks"
 import { FormEvent } from "react"
@@ -16,6 +16,11 @@ export default function Page(){
     const loginToAccount = async(e : FormEvent)=>{
         e.preventDefault()
         try{
+            if(!passwordRegex.test(password)){
+                alert("password salah!")
+                return
+            }
+
             const response = await fetch(`https://api.zeverial.online/users/login`,{
                 method:"POST",
                 headers:{"Content-Type" : "application/json"},
@@ -44,7 +49,7 @@ export default function Page(){
         <div className="flex justify-center align-middle items-center h-screen">
             <div className="flex bg-[#161B22] h-96 items-center justify-center align-middle flex-col w-md md:w-xl p-2 rounded-md shadow-xl">
                 <h1 className="text-2xl my-2 font-extrabold text-blue-600">Login</h1>
-                <p className="text-gray-400 text-center">Welcome back!, please fiell the empty field for login to your account!.</p>
+                <p className="text-gray-400 text-center">Selamat datang kembali!, mohon isi kolom kosong untuk login ke akun mu.</p>
                 <form onSubmit={loginToAccount} method="POST">
                 <UsernameInput values={username} changer={(e)=>dispatch(setUsername(e.target.value))}/>
                 <div className="flex flex-col my-4">
@@ -53,7 +58,7 @@ export default function Page(){
                 </div>
                 <div className="flex justify-center items-center flex-col">
                 <button className="mx-auto bg-blue-400 transition-all hover:bg-blue-600 cursor-pointer hover:text-blue-900 p-2 text-white font-bold my-1 rounded-md">Login</button>
-                <a href="/register" className="text-blue-400 hover:underline transition-all hover:text-blue-600">Dont have an account? click here!</a>
+                <a href="/register" className="text-blue-400 hover:underline transition-all hover:text-blue-600">Belum punya akun? klik disini!</a>
                </div>
                </form>
             </div>

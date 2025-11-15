@@ -1,5 +1,5 @@
 'use client'
-import PasswordInput from "@/app/component/passwordInput";
+import PasswordInput, { passwordRegex } from "@/app/component/passwordInput";
 import { setPassword } from "@/app/features/accountSlice";
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import { redirect, useSearchParams } from "next/navigation";
@@ -23,6 +23,10 @@ export function ResetPassword(){
     const generateOTPCode = async (e : FormEvent)=>{
         e.preventDefault()
         try{
+            if(!passwordRegex.test(password)){
+                alert("password tidak valid!")
+                return 
+            }
             const response = await fetch(`https://api.zeverial.online/users/new_password`,{
                 method : "POST",
                 headers: {

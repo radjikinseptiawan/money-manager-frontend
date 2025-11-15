@@ -162,8 +162,8 @@ export default function Page() {
       </div>
 
       <h2 className="font-bold mb-2 text-blue-800 text-xl">Statistik Keuangan</h2>
-      <div className="bg-[#161b22] rounded-xl flex justify-center p-4 mb-6 border border-blue-800">
-        <LineChart responsive height={300} data={chartData} className=" p-2 w-72 md:w-xl  rounded-md bg-[#252c36]">
+      <div className="bg-[#161b22] rounded-xl flex-col md:flex-row flex justify-center p-4 mb-6 border border-blue-800">
+        <LineChart responsive height={300} data={chartData} className=" p-2 w-80 md:w-xl  rounded-md bg-[#252c36]">
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="date" />
           <YAxis />
@@ -173,7 +173,7 @@ export default function Page() {
           <Line type="monotone" dataKey="pengeluaran" stroke="#e30008" />
         </LineChart>
 
-<div className="grid grid-cols-1 md:grid-cols-2 gap-5 mx-10 items-center justify-center">
+<div className="grid grid-cols-2 md:grid-cols-2 gap-5 mx-10 my-10 items-center justify-center">
   {[
     { title: "Pemasukkan Tertinggi",jenis:"pemasukkan", value: transaction?.pemasukkan_tertinggi ?? 0},
     { title: "Pengeluaran Tertinggi",jenis:"pengeluaran", value:transaction?.pengeluaran_tertinggi ?? 0},

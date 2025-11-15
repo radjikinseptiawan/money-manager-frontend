@@ -2,6 +2,9 @@
 import Image from "next/image";
 import { ChangeEvent, useState } from "react";
 
+ export const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+
+
 export default function PasswordInput({
   changer,
   labelTitle,
@@ -9,15 +12,14 @@ export default function PasswordInput({
   labelTitle: string;
   changer: (e: ChangeEvent<HTMLInputElement>) => void;
 }) {
-  const passwordRegex =
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
-
+ 
   const [error, setError] = useState<string>("");
   const [image, setImage] = useState<boolean>(false);
 
   const iconEye = () => {
     setImage((prev) => !prev);
   };
+
 
   const passwordValidation = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
