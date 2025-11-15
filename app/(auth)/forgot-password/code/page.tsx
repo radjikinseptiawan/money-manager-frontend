@@ -22,7 +22,7 @@ export function Code(){
     const generateOTPCode = async (e : FormEvent)=>{
         e.preventDefault()
         try{
-            const response = await fetch(`http://localhost:3000/users/input_otp?email=${getEmail}&code=${code}`,{
+            const response = await fetch(`https://api.zeverial.online/users/input_otp?email=${getEmail}&code=${code}`,{
                 method : "GET",
                 headers: {
                     "Content-Type" : "application/json"

@@ -18,7 +18,7 @@ export default function Page(){
     const submitAccounts = async (e: FormEvent)=>{
         e.preventDefault()
         try{
-            const response = await fetch('http://localhost:3000/users/register',{
+            const response = await fetch('https://api.zeverial.online/users/register',{
                 method:"POST",
                 headers:{"Content-Type" : "application/json"},
                 body:JSON.stringify({

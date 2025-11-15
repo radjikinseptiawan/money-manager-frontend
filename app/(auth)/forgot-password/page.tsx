@@ -12,7 +12,7 @@ export default function Page(){
     const generateOTPCode = async (e : FormEvent)=>{
         e.preventDefault()
         try{    
-            const response = await fetch(`http://localhost:3000/users/forgot-password?email=${email}`,{
+            const response = await fetch(`https://api.zeverial.online/users/forgot-password?email=${email}`,{
                 method : "GET",
                 headers: {
                     "Content-Type" : "application/json"
