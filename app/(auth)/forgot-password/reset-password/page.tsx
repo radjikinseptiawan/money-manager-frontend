@@ -38,7 +38,7 @@ export function ResetPassword(){
                 })
             }) 
             const data = await response.json()
-            redirect("/login")
+            window.location.href ="/login"
             return data
         }catch(e){
             console.log(e)
