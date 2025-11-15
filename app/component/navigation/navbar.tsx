@@ -18,7 +18,6 @@ export default function Navbar({ children }: { children?: ReactNode }) {
         return 
       }
 
-      return window.location.reload()
     }catch(e){
       console.log(e)
       return
