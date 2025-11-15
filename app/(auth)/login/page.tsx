@@ -16,7 +16,7 @@ export default function Page(){
     const loginToAccount = async(e : FormEvent)=>{
         e.preventDefault()
         try{
-            const response = await fetch(`http://localhost:3000/users/login`,{
+            const response = await fetch(`https://api.zeverial.online/users/login`,{
                 method:"POST",
                 headers:{"Content-Type" : "application/json"},
                 body:JSON.stringify({
@@ -25,14 +25,12 @@ export default function Page(){
                 }),
             })
             const data = await response.json()
-                console.log(data.access_token.access_token)
+                console.log(data)
             await fetch('/api/auth',{
                 method:"POST",
                 headers:{"Content-Type" : "application/json"},
                 body:JSON.stringify({access_token : data.access_token.access_token})
             })
-
-            localStorage.setItem("access_token",data.access_token.access_token)
 
             router.push('/dashboard')
             return response
@@ -48,7 +46,7 @@ export default function Page(){
                 <h1 className="text-2xl my-2 font-extrabold text-blue-600">Login</h1>
                 <p className="text-gray-400">Welcome back!, please fiell the empty field for login to your account!.</p>
                 <form onSubmit={loginToAccount} method="POST">
-                <UsernameInput values={username.toLowerCase()} changer={(e)=>dispatch(setUsername(e.target.value))}/>
+                <UsernameInput values={username} changer={(e)=>dispatch(setUsername(e.target.value))}/>
                 <div className="flex flex-col my-4">
                 <PasswordInput changer={(e)=>dispatch(setPassword(e.target.value))} labelTitle="password"/>
                 <a href="/forgot-password" className="text-blue-400 hover:underline transition-all hover:text-blue-600">Forgot password?</a>

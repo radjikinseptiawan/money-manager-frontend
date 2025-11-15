@@ -1,8 +1,11 @@
-"use client"
+import ClientProvider from "./ClientProvider";
 import "./globals.css";
-import { Provider } from "react-redux";
-import{ store } from "./store";
 
+export const metadata = {
+  title:{
+    default:"Zeverial",
+  }
+}
 
 export default function RootLayout({
   children,
@@ -13,9 +16,9 @@ export default function RootLayout({
     <html lang="en">
       <body
       >
-        <Provider store={store}>
+        <ClientProvider>
         {children}
-        </Provider>
+        </ClientProvider>
       </body>
     </html>
   );
