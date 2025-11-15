@@ -18,6 +18,7 @@ export default function Navbar({ children }: { children?: ReactNode }) {
         return 
       }
 
+      window.location.href = "/login"
     }catch(e){
       console.log(e)
       return
