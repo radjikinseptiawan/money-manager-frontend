@@ -30,7 +30,6 @@ export default function Page(){
                 }),
             })
             const data = await response.json()
-                console.log(data)
             await fetch('/api/auth',{
                 method:"POST",
                 headers:{"Content-Type" : "application/json"},

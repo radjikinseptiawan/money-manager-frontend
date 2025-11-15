@@ -10,7 +10,6 @@ export default function Navbar({ children }: { children?: ReactNode }) {
         method:"DELETE",
         credentials:"include"
       })
-      console.log(response)
       await fetch('/api/auth',{
         method:"DELETE"
       })

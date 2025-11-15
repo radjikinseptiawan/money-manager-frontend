@@ -28,7 +28,6 @@ export function Code(){
                     "Content-Type" : "application/json"
                 }}) 
             const data = await response.json()
-            console.log(data)
             window.location.href = `/forgot-password/reset-password?email=${getEmail}&code=${code}`
             return data
         }catch(e){

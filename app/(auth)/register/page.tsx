@@ -43,7 +43,6 @@ export default function Page(){
                 })
             })
             const data = await response.json();
-            console.log(data)
             if(!response.ok){
                 return response
             }   

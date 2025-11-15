@@ -80,7 +80,6 @@ export default function Page() {
         }),
       });
 
-        console.log(res)
       if (res.ok) {
         await fetchData();
         setOpen(false);

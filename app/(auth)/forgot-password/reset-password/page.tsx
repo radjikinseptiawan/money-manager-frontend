@@ -38,7 +38,6 @@ export function ResetPassword(){
                 })
             }) 
             const data = await response.json()
-            console.log(data)
             redirect("/login")
             return data
         }catch(e){
