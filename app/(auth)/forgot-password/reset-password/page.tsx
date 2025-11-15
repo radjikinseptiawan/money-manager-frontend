@@ -23,7 +23,7 @@ export function ResetPassword(){
     const generateOTPCode = async (e : FormEvent)=>{
         e.preventDefault()
         try{
-            const response = await fetch(`https://api.zeverial.online/new_password`,{
+            const response = await fetch(`https://api.zeverial.online/users/new_password`,{
                 method : "POST",
                 headers: {
                     "Content-Type" : "application/json"
