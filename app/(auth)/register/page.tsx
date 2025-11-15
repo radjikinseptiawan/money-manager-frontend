@@ -43,7 +43,7 @@ export default function Page(){
         <div className="flex justify-center align-middle items-center h-screen">
             <div className="flex bg-[#161B22] h-auto items-center justify-center align-middle flex-col w-md md:w-xl p-2 rounded-md shadow-xl">
                 <h1 className="text-2xl my-2 font-extrabold text-blue-600">Register</h1>
-                <p className="text-gray-400">Welcome!, please fiell the empty field for register your account!.</p>
+                <p className="text-gray-400 text-center">Welcome!, please fiell the empty field for register your account!.</p>
                 <form action="" className="flex flex-col justify-center items-center" onSubmit={submitAccounts} method="POST">
 
                 <UsernameInput values={username.toLowerCase()} changer={(e)=>dispatch(setUsername(e.target.value))}/>

@@ -8,6 +8,7 @@ export default function Navbar({ children }: { children?: ReactNode }) {
     try{
       const response = await fetch("https://api.zeverial.online/users/logout",{
         method:"DELETE",
+        credentials:"include"
       })
 
       await fetch('/api/auth',{
