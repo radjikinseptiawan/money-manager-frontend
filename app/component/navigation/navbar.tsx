@@ -10,6 +10,9 @@ export default function Navbar({ children }: { children?: ReactNode }) {
         method:"DELETE",
       })
 
+      await fetch('/api/auth',{
+        method:"DELETE"
+      })
       if(!response.ok){
         return 
       }
