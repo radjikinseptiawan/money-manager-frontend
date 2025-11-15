@@ -6,7 +6,7 @@ export default function Navbar({ children }: { children?: ReactNode }) {
   const [open, setOpen] = useState<boolean>(false);
   const setLogout = async()=>{
     try{
-      const response = await fetch("https://api.zeverial.online/users/logout",{
+      const response = await fetch(`https://api.zeverial.online/users/logout`,{
         method:"DELETE",
         credentials:"include"
       })
