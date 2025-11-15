@@ -44,7 +44,7 @@ export default function Page(){
         <div className="flex justify-center align-middle items-center h-screen">
             <div className="flex bg-[#161B22] h-96 items-center justify-center align-middle flex-col w-md md:w-xl p-2 rounded-md shadow-xl">
                 <h1 className="text-2xl my-2 font-extrabold text-blue-600">Login</h1>
-                <p className="text-gray-400">Welcome back!, please fiell the empty field for login to your account!.</p>
+                <p className="text-gray-400 text-center">Welcome back!, please fiell the empty field for login to your account!.</p>
                 <form onSubmit={loginToAccount} method="POST">
                 <UsernameInput values={username} changer={(e)=>dispatch(setUsername(e.target.value))}/>
                 <div className="flex flex-col my-4">
