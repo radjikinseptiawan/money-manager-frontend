@@ -23,7 +23,6 @@ export default function Page(){
                 }}) 
                 
             const data = await response.json()
-            console.log(data)
             if(response.status == 404 || data.email == ''){
                 window.location.href = "/forgot-password"
                 return
