@@ -24,10 +24,11 @@ export default function Page(){
                 
             const data = await response.json()
             console.log(data)
-            if(!response.ok || data.email == ''){
+            if(response.status == 404 || data.email == ''){
                 window.location.href = "/forgot-password"
+                return
             }
-            // window.location.href = `forgot-password/code?email=${email}`
+            window.location.href = `forgot-password/code?email=${email}`
             return data
         }catch(e){
             console.log(e)
