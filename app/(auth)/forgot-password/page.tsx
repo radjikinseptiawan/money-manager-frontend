@@ -21,11 +21,13 @@ export default function Page(){
                 headers: {
                     "Content-Type" : "application/json"
                 }}) 
+                
             const data = await response.json()
+            console.log(data)
             if(!response.ok || data.email == ''){
                 window.location.href = "/forgot-password"
             }
-            window.location.href = `forgot-password/code?email=${email}`
+            // window.location.href = `forgot-password/code?email=${email}`
             return data
         }catch(e){
             console.log(e)
