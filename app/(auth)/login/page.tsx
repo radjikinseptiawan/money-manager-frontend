@@ -2,7 +2,7 @@
 import PasswordInput, { passwordRegex } from "@/app/component/passwordInput"
 import { setPassword, setUsername } from "@/app/features/accountSlice"
 import { useAppSelector } from "@/app/hooks"
-import { FormEvent } from "react"
+import { FormEvent, useLayoutEffect } from "react"
 import { useDispatch } from "react-redux"
 import '../auth.css'
 import { useRouter } from "next/navigation"
@@ -13,6 +13,11 @@ export default function Page(){
     const password = useAppSelector((state)=>state.accounts.password)
     const dispatch = useDispatch()
     const router = useRouter()
+    useLayoutEffect(()=>{
+        document.body.style.background = "url(/background_auth.jpg)"
+        document.body.style.backgroundPosition = "center"
+    },[])
+
     const loginToAccount = async(e : FormEvent)=>{
         e.preventDefault()
         try{
@@ -21,15 +26,17 @@ export default function Page(){
                 return
             }
 
-            const response = await fetch(`https://api.zeverial.online/users/login`,{
+            const response = await fetch(`http://api.zeverial.online/users/login`,{
                 method:"POST",
                 headers:{"Content-Type" : "application/json"},
                 body:JSON.stringify({
                     username: username,
                     password: password
                 }),
+
             })
             const data = await response.json()
+            console.log(data)
             await fetch('/api/auth',{
                 method:"POST",
                 headers:{"Content-Type" : "application/json"},

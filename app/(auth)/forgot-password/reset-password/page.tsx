@@ -3,7 +3,7 @@ import PasswordInput, { passwordRegex } from "@/app/component/passwordInput";
 import { setPassword } from "@/app/features/accountSlice";
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import { redirect, useSearchParams } from "next/navigation";
-import { FormEvent, Suspense } from "react";
+import { FormEvent, Suspense, useLayoutEffect } from "react";
 import '../../auth.css'
 
 const url : string = 'https://project-manager-api-theta.vercel.app/'
@@ -20,6 +20,13 @@ export function ResetPassword(){
     const dispatch = useAppDispatch()
     const searchParams = useSearchParams()
     const email = searchParams.get('email')
+
+    useLayoutEffect(()=>{
+            document.body.style.background = "url(/background_auth.jpg)"
+            document.body.style.backgroundPosition = "center"
+    },[])
+    
+
     const generateOTPCode = async (e : FormEvent)=>{
         e.preventDefault()
         try{

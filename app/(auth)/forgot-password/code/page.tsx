@@ -3,7 +3,7 @@ import { setEmail } from "@/app/features/accountSlice";
 import { setOtp } from "@/app/features/otpSlice";
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import { useParams, useSearchParams } from "next/navigation";
-import { FormEvent, Suspense, useEffect, useState } from "react";
+import { FormEvent, Suspense, useEffect, useLayoutEffect, useState } from "react";
 import '../../auth.css'
 const url : string = 'https://project-manager-api-theta.vercel.app/'
 export default function Page(){
@@ -34,6 +34,12 @@ export function Code(){
             console.log(e)
         }
     }
+
+    useLayoutEffect(()=>{
+        document.body.style.background = "url(/background_auth.jpg)"
+        document.body.style.backgroundPosition = "center"
+    },[])
+
     return(
         <>
                 <div className="flex justify-center align-middle items-center h-screen">

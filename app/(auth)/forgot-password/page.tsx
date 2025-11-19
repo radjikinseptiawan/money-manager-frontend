@@ -1,7 +1,7 @@
 'use client'
 import { setEmail } from "@/app/features/accountSlice";
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
-import { FormEvent } from "react";
+import { FormEvent, useLayoutEffect } from "react";
 import '../auth.css'
 import EmailInput, { emailRegex } from "@/app/component/emailInput";
 const url : string = 'https://project-manager-api-theta.vercel.app/'
@@ -9,6 +9,11 @@ export default function Page(){
     const email = useAppSelector((state)=>state.accounts.email)
     const dispatch = useAppDispatch()
 
+        useLayoutEffect(()=>{
+            document.body.style.background = "url(/background_auth.jpg)"
+            document.body.style.backgroundPosition = "center"
+        },[])
+    
     const generateOTPCode = async (e : FormEvent)=>{
         e.preventDefault()
         try{    

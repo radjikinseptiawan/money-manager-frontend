@@ -8,7 +8,7 @@ import {
 } from "@/app/features/newTransactionSlice";
 import NewTransaction from "@/app/component/newTransaction";
 import TableTransaction from "@/app/component/tableData";
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useCallback, useEffect, useLayoutEffect, useMemo, useState } from "react";
 import { CartesianGrid, Legend, Line, Tooltip, XAxis, YAxis, LineChart } from "recharts";
 
 interface TransactionItem {
@@ -42,12 +42,17 @@ export default function Page() {
   const [loading, setLoading] = useState(true);
   const [open, setOpen] = useState(false);
 
+  useLayoutEffect(()=>{
+        document.body.style.background = "#0d1117"    
+        return ()=> {document.body.style.background = ""}  
+    },[])
+
   const formattedMoney = (n: any) => new Intl.NumberFormat("id-ID").format(n ?? 0);
 
   async function fetchData() {
     try {
       setLoading(true);
-      const res = await fetch(`https://api.zeverial.online/transaction`, {
+      const res = await fetch(`http://api.zeverial.online/transaction`, {
         credentials: "include",
       });
       if (!res.ok) throw new Error("Fetch failed");
@@ -61,14 +66,13 @@ export default function Page() {
     }
   }
 
-  useEffect(() => {
-    fetchData();
-  }, []);
-
+  useEffect(()=>{
+    fetchData()
+  },[])
   async function addData(e: FormEvent) {
     e.preventDefault();
     try {
-      const res = await fetch(`https://api.zeverial.online/transaction`, {
+      const res = await fetch(`http://api.zeverial.online/transaction`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -97,7 +101,7 @@ export default function Page() {
 
   async function deleteTransaction(id: string) {
     try {
-      const res = await fetch(`https://api.zeverial.online/transaction/${id}`, {
+      const res = await fetch(`http://api.zeverial.online/transaction/${id}`, {
         method: "DELETE",
         credentials: "include",
       });
@@ -121,22 +125,27 @@ export default function Page() {
     ? transaction!.transaksi!
     : [];
 
-  const monthData = ['Januari','Febuari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember']
 
-  // transactionsArray.sort((a,b)=>new Date(b.transaction_date).getTime() - new Date(a.transaction_date).getTime())
-  const chartData = transactionsArray.length
-    ? transactionsArray.slice(0, 12).map((t, i) => ({
-        date:monthData[new Date(t.transaction_date).getMonth()],
-        pemasukkan: t.jenis === "pemasukkan" ? t.nominal_transaction : 0,
-        pengeluaran: t.jenis === "pengeluaran" ? t.nominal_transaction : 0,
-      }))
-    : [
-        { date: "Januari", pemasukkan: 0, pengeluaran: 0 },
-        { date: "Febuari", pemasukkan: 0, pengeluaran: 0 },
-      ];
-    
+
+    const monthData = ['Januari','Febuari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember']
+
+    const cachingChart = useMemo(()=>{
+    if(!transactionsArray.length){
+      return  [
+      { date: "Januari", pemasukkan: 0, pengeluaran: 0 },
+      { date: "Febuari", pemasukkan: 0, pengeluaran: 0 },
+    ];
+    }
+    return transactionsArray.slice(0,12).map((t)=>({
+      date : monthData[new Date(t.transaction_date).getMonth()],
+      pemasukkan: t.jenis === "pemasukkan" ? t.nominal_transaction : 0,
+      pengeluaran: t.jenis ==="pengeluaran" ? t.nominal_transaction: 0
+    }))
+  },[transactionsArray])
+
+  // transactionsArray.sort((a,b)=>new Date(b.transaction_date).getTime() - new Date(a.transaction_date).getTime())    
   return (
-    <div className={`p-6 w-full min-h-screen bg-[#0d1117] mt-20 text-white`}>
+    <div className={`p-6 w-full min-h-screen mt-20 text-white`}>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 mb-6">
         {[
           {
@@ -162,7 +171,7 @@ export default function Page() {
 
       <h2 className="font-bold mb-2 text-blue-800 text-xl">Statistik Keuangan</h2>
       <div className="bg-[#161b22] rounded-xl flex-col md:flex-row flex justify-center p-4 mb-6 border border-blue-800">
-        <LineChart responsive height={300} data={chartData} className=" p-2 w-72 md:w-xl  rounded-md bg-[#252c36]">
+        <LineChart responsive height={300} data={cachingChart} className=" p-2 w-72 md:w-xl  rounded-md bg-[#252c36]">
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="date" />
           <YAxis />
@@ -174,10 +183,10 @@ export default function Page() {
 
 <div className="grid grid-cols-2 md:grid-cols-2 gap-5 mx-2 my-10 items-center justify-center">
   {[
-    { title: "Pemasukkan Tertinggi",jenis:"pemasukkan", value: transaction?.pemasukkan_tertinggi ?? 0},
-    { title: "Pengeluaran Tertinggi",jenis:"pengeluaran", value:transaction?.pengeluaran_tertinggi ?? 0},
-    { title: "Pemasukkan Terendah",jenis:"pemasukkan", value: transaction?.pemasukkan_terendah ?? 0},
-    { title: "Pengeluaran Terendah",jenis:"pengeluaran", value: transaction?.pengeluaran_terendah ?? 0},
+    { title: "Pemasukkan Tertinggi",jenis:"pemasukkan", value: transaction?.pemasukkan_tertinggi},
+    { title: "Pengeluaran Tertinggi",jenis:"pengeluaran", value:transaction?.pengeluaran_tertinggi},
+    { title: "Pemasukkan Terendah",jenis:"pemasukkan", value: transaction?.pemasukkan_terendah},
+    { title: "Pengeluaran Terendah",jenis:"pengeluaran", value: transaction?.pengeluaran_terendah},
   ].map((item, idx) => (
     <div
       key={idx}
