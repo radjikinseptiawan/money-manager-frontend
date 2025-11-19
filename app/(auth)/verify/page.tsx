@@ -1,8 +1,16 @@
 "use client"
 import { useSearchParams } from "next/navigation"
-import { useEffect, useState } from "react"
+import { Suspense, useEffect, useState } from "react"
 
 export default function Page(){
+    return(
+        <Suspense>
+            <Verify/>
+        </Suspense>
+    )
+}
+
+function Verify(){
     const [isVerification,setIsverification] = useState<boolean>(false)
     const searchParams = useSearchParams()
     const token = searchParams.get("token")
