@@ -26,7 +26,7 @@ export default function Page(){
                 return
             }
 
-            const response = await fetch(`http://api.zeverial.online/users/login`,{
+            const response = await fetch(`https://api.zeverial.online/users/login`,{
                 method:"POST",
                 headers:{"Content-Type" : "application/json"},
                 body:JSON.stringify({
