@@ -52,7 +52,7 @@ export default function Page() {
   async function fetchData() {
     try {
       setLoading(true);
-      const res = await fetch(`http://api.zeverial.online/transaction`, {
+      const res = await fetch(`https://api.zeverial.online/transaction`, {
         credentials: "include",
       });
       if (!res.ok) throw new Error("Fetch failed");
@@ -72,7 +72,7 @@ export default function Page() {
   async function addData(e: FormEvent) {
     e.preventDefault();
     try {
-      const res = await fetch(`http://api.zeverial.online/transaction`, {
+      const res = await fetch(`https://api.zeverial.online/transaction`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -101,7 +101,7 @@ export default function Page() {
 
   async function deleteTransaction(id: string) {
     try {
-      const res = await fetch(`http://api.zeverial.online/transaction/${id}`, {
+      const res = await fetch(`https://api.zeverial.online/transaction/${id}`, {
         method: "DELETE",
         credentials: "include",
       });
