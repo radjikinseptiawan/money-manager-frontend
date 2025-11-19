@@ -8,7 +8,7 @@ export default function Page(){
     const token = searchParams.get("token")
     const fetchingTheResponse = async ()=>{
         try{
-            const response = await fetch(`http:/site.zeverial.online/users/verify?token=${token}`)
+            const response = await fetch(`http:/api.zeverial.online/users/verify?token=${token}`)
             const data = await response.json()
             if(!data){
                 console.log(data)
