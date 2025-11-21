@@ -34,18 +34,27 @@ export function ResetPassword(){
                 alert("password tidak valid!")
                 return 
             }
-            const response = await fetch(`https://api.zeverial.online/users/new_password`,{
-                method : "POST",
-                headers: {
-                    "Content-Type" : "application/json",
-                    "x-api-key" : "6B224A9476D91EAF3175184AA4D21"
-                },
-                body: JSON.stringify({
-                    newPassword: password,
+
+            const response = await fetch("/api/auth/reset-password",{
+                method:"POST",
+                body:JSON.stringify({
+                    newPassword : password,
                     email : email
                 })
-            }) 
+            })
             const data = await response.json()
+            // const response = await fetch(`https://api.zeverial.online/users/new_password`,{
+            //     method : "POST",
+            //     headers: {
+            //         "Content-Type" : "application/json",
+            //         "x-api-key" : "6B224A9476D91EAF3175184AA4D21"
+            //     },
+            //     body: JSON.stringify({
+            //         newPassword: password,
+            //         email : email
+            //     })
+            // }) 
+            // const data = await response.json()
             window.location.href ="/login"
             return data
         }catch(e){

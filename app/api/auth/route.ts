@@ -2,30 +2,57 @@ import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 
 export async function POST(req: Request) {
-  const { access_token } = await req.json();
-  if (!access_token) {
-    return NextResponse.json({ success: false, message: 'No token provided' });
+  const body = await req.json();
+
+
+  if (!body) {
+    return NextResponse.json({ success: false, message: 'No data provided' });
   }
 
-  (await cookies()).set('access_token', access_token, {
-    httpOnly: true,
-    secure: true,
-    sameSite: 'none',
-    path: '/',
-    domain:".zeverial.online",
-    maxAge: 60 * 60 * 24, 
+  const response = await fetch("https://api.zeverial.online/users/login", {
+    method:"POST",
+    headers:{
+      "Content-Type": "application/json",
+      "x-api-key": "6B224A9476D91EAF3175184AA4D21"
+    },
+    body: JSON.stringify(body)
   });
-  return NextResponse.json({ success: true,message:"Success to login",authorized:true });
+
+  const data = await response.json();
+
+  if (!data.access_token) {
+    return NextResponse.json({
+      success: false,
+      message: "Login gagal, backend tidak kirim token",
+      backendMessage: data.message
+    });
+  }
+
+  const cookieStore = cookies();
+  (await cookieStore).set("access_token", data.access_token.access_token, {
+    httpOnly: true,
+    secure: false,
+    sameSite: "lax",
+    path: "/",
+    maxAge: 60 * 60 * 24
+  });
+
+  return NextResponse.json({
+    success: true,
+    message: "Success to login",
+    authorized: true
+  });
 }
+
 
 
 export async function DELETE(req: Request){
     (await cookies()).set("access_token","",{
       httpOnly:true,
-      secure:true,
-      sameSite:'none',
+      secure:false,
+      sameSite:'lax',
       path:"/",
-      domain:".zeverial.online",
+      // domain:".zeverial.online",
       maxAge:0
     })
 

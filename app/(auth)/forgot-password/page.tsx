@@ -4,7 +4,6 @@ import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import { FormEvent, useLayoutEffect } from "react";
 import '../auth.css'
 import EmailInput, { emailRegex } from "@/app/component/emailInput";
-const url : string = 'https://project-manager-api-theta.vercel.app/'
 export default function Page(){
     const email = useAppSelector((state)=>state.accounts.email)
     const dispatch = useAppDispatch()
@@ -21,12 +20,9 @@ export default function Page(){
                 alert("Email tidak valid")
                 return
             }
-            const response = await fetch(`https://api.zeverial.online/users/forgot-password?email=${email}`,{
+            const response = await fetch(`api/auth/forgot-password?email=${email}`,{
                 method : "GET",
-                headers: {
-                    "Content-Type" : "application/json",
-                    "x-api-key" : "6B224A9476D91EAF3175184AA4D21"
-                }}) 
+                }) 
                 
             const data = await response.json()
             if(response.status == 404 || data.email == ''){

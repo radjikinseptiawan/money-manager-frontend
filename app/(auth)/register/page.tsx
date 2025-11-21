@@ -33,7 +33,7 @@ export default function Page(){
                 return
             }
 
-            const response = await fetch('https://api.zeverial.online/users/register',{
+            const response = await fetch('api/auth/register',{
                 method:"POST",
                 headers:{
                     "Content-Type" : "application/json",

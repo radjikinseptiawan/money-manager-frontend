@@ -28,24 +28,24 @@ export default function Page(){
             }
 
             
-            const response = await fetch(`https://api.zeverial.online/users/login`,{
-                method:"POST",
-                headers:{
-                    "Content-Type" : "application/json",
-                    "x-api-key": "6B224A9476D91EAF3175184AA4D21"
-                },
-                body:JSON.stringify({
-                    username: username,
-                    password: password
-                }),
+            // const response = await fetch(`https://api.zeverial.online/users/login`,{
+            //     method:"POST",
+            //     headers:{
+            //         "Content-Type" : "application/json",
+            //         "x-api-key": "6B224A9476D91EAF3175184AA4D21"
+            //     },
+            //     body:JSON.stringify({
+            //         username: username,
+            //         password: password
+            //     }),
 
-            })
-            const data = await response.json()
-            console.log(data)
-            await fetch('/api/auth',{
+            // })
+            // const data = await response.json()
+            // console.log(data)
+            const response = await fetch('/api/auth',{
                 method:"POST",
                 headers:{"Content-Type" : "application/json"},
-                body:JSON.stringify({access_token : data.access_token.access_token})
+                body:JSON.stringify({username:username, password:password})
             })
 
             router.push('/dashboard')

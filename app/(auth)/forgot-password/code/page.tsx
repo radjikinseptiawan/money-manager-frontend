@@ -22,12 +22,10 @@ export function Code(){
     const generateOTPCode = async (e : FormEvent)=>{
         e.preventDefault()
         try{
-            const response = await fetch(`https://api.zeverial.online/users/input_otp?email=${getEmail}&code=${code}`,{
-                method : "GET",
-                headers: {
-                    "Content-Type" : "application/json",
-                    "x-api-key" : "6B224A9476D91EAF3175184AA4D21"
-                }}) 
+            const response = await fetch("/api/auth/code",{
+                method:"GET",
+            })
+
             const data = await response.json()
             window.location.href = `/forgot-password/reset-password?email=${getEmail}&code=${code}`
             return data
