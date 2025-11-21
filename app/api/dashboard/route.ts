@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server"
 
 export async function GET(req : NextRequest){
     const cookie = req.headers.get("cookie")!;
-    const res = await fetch(`http://api.zeverial.online/transaction`, {
+    const res = await fetch(`https://api.zeverial.online/transaction`, {
         method: "GET",
         headers: { 
           "Content-Type": "application/json", 
@@ -17,8 +17,7 @@ export async function GET(req : NextRequest){
 
 export async function POST(req:NextRequest){
     const cookie =req.headers.get("cookie") ?? ""
-    const body = await req.json()
-    const res = await fetch("http://api.zeverial.online/transaction",{
+    const res = await fetch("https://api.zeverial.online/transaction",{
         method:"POST",
            headers: { 
           "Content-Type": "application/json", 
