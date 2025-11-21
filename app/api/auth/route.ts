@@ -50,7 +50,7 @@ export async function POST(req: Request) {
 export async function DELETE(req: Request){
     (await cookies()).set("access_token","",{
       httpOnly:true,
-      secure:false,
+      secure:true,
       sameSite:'lax',
       path:"/",
       domain:".zeverial.online",
