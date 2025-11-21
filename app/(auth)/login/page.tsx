@@ -8,6 +8,7 @@ import '../auth.css'
 import { useRouter } from "next/navigation"
 import UsernameInput from "@/app/component/usernameInput"
 
+const url = `https://api.zeverial.online/users/login` 
 export default function Page(){
     const username = useAppSelector((state)=>state.accounts.username)
     const password = useAppSelector((state)=>state.accounts.password)
@@ -26,9 +27,13 @@ export default function Page(){
                 return
             }
 
-            const response = await fetch(`https://api.zeverial.online/users/login`,{
+            
+            const response = await fetch(`http://localhost:3000/users/login`,{
                 method:"POST",
-                headers:{"Content-Type" : "application/json"},
+                headers:{
+                    "Content-Type" : "application/json",
+                    "x-api-key": "6B224A9476D91EAF3175184AA4D21"
+                },
                 body:JSON.stringify({
                     username: username,
                     password: password

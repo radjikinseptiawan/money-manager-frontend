@@ -25,7 +25,8 @@ export function Code(){
             const response = await fetch(`https://api.zeverial.online/users/input_otp?email=${getEmail}&code=${code}`,{
                 method : "GET",
                 headers: {
-                    "Content-Type" : "application/json"
+                    "Content-Type" : "application/json",
+                    "x-api-key" : "6B224A9476D91EAF3175184AA4D21"
                 }}) 
             const data = await response.json()
             window.location.href = `/forgot-password/reset-password?email=${getEmail}&code=${code}`

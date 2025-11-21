@@ -37,7 +37,8 @@ export function ResetPassword(){
             const response = await fetch(`https://api.zeverial.online/users/new_password`,{
                 method : "POST",
                 headers: {
-                    "Content-Type" : "application/json"
+                    "Content-Type" : "application/json",
+                    "x-api-key" : "6B224A9476D91EAF3175184AA4D21"
                 },
                 body: JSON.stringify({
                     newPassword: password,

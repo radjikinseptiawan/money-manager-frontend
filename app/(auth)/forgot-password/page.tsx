@@ -24,7 +24,8 @@ export default function Page(){
             const response = await fetch(`https://api.zeverial.online/users/forgot-password?email=${email}`,{
                 method : "GET",
                 headers: {
-                    "Content-Type" : "application/json"
+                    "Content-Type" : "application/json",
+                    "x-api-key" : "6B224A9476D91EAF3175184AA4D21"
                 }}) 
                 
             const data = await response.json()

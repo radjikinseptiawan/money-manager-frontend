@@ -35,7 +35,9 @@ export default function Page(){
 
             const response = await fetch('https://api.zeverial.online/users/register',{
                 method:"POST",
-                headers:{"Content-Type" : "application/json"},
+                headers:{
+                    "Content-Type" : "application/json",
+                    "x-api-key" : "6B224A9476D91EAF3175184AA4D21"},
                 body:JSON.stringify({
                     username: username,
                     password: password,

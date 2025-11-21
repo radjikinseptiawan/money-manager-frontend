@@ -52,11 +52,16 @@ export default function Page() {
   async function fetchData() {
     try {
       setLoading(true);
-      const res = await fetch(`https://api.zeverial.online/transaction`, {
+      const res = await fetch(`api/dashboard`, {
+        method:"GET",
         credentials: "include",
+        headers:{
+          "x-api-key" : "6B224A9476D91EAF3175184AA4D21"
+        }
       });
       if (!res.ok) throw new Error("Fetch failed");
       const data = await res.json();
+      console.log("test", data)
       setTransaction(data.data ?? null);
     } catch (e) {
       console.error("fetchData error:", e);
@@ -72,9 +77,8 @@ export default function Page() {
   async function addData(e: FormEvent) {
     e.preventDefault();
     try {
-      const res = await fetch(`https://api.zeverial.online/transaction`, {
+      const res = await fetch(`api/dashboard`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
         credentials: "include",
         body: JSON.stringify({
           nominal_transaction: nominalTransaction,
@@ -83,7 +87,7 @@ export default function Page() {
           detail_transaction: detailTransaction,
         }),
       });
-
+      console.log("test",res)
       if (res.ok) {
         await fetchData();
         setOpen(false);
@@ -101,7 +105,7 @@ export default function Page() {
 
   async function deleteTransaction(id: string) {
     try {
-      const res = await fetch(`https://api.zeverial.online/transaction/${id}`, {
+      const res = await fetch(`api/dashboard/${id}`, {
         method: "DELETE",
         credentials: "include",
       });

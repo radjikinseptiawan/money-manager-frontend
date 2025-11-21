@@ -16,7 +16,10 @@ function Verify(){
     const token = searchParams.get("token")
     const fetchingTheResponse = async ()=>{
         try{
-            const response = await fetch(`https://api.zeverial.online/users/verify?token=${token}`)
+            const response = await fetch(`https://api.zeverial.online/users/verify?token=${token}`,{
+                method:"GET",
+                headers:{"x-api-key" : "6B224A9476D91EAF3175184AA4D21"}
+            })
             const data = await response.json()
             if(!data){
                 console.log(data)
