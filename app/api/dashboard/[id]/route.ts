@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 
-export async function DELETE(req : NextRequest,context : {params : { id : string}}){
+export async function DELETE(req : NextRequest,context : {params : Promise<{ id : string}>}){
     const cookie = req.headers.get("cookie") ?? ""
-    const {id} =  context.params;
+    const {id} = await context.params;
     console.log(id)
     const res = await fetch(`http://api.zeverial.online/transaction/${id}`,{
         method:"DELETE",
