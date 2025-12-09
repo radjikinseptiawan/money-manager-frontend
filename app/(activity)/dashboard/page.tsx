@@ -56,6 +56,7 @@ export default function Page() {
         method:"GET",
         credentials: "include",
         headers:{
+          "Content-Type": "application/json",
           "x-api-key" : "6B224A9476D91EAF3175184AA4D21"
         }
       });
@@ -80,6 +81,9 @@ export default function Page() {
       const res = await fetch(`api/dashboard`, {
         method: "POST",
         credentials: "include",
+        headers:{
+          "Content-Type": "application/json"
+        },
         body: JSON.stringify({
           nominal_transaction: nominalTransaction,
           transaction_date: dateTransaction,
@@ -107,6 +111,9 @@ export default function Page() {
     try {
       const res = await fetch(`api/dashboard/${id}`, {
         method: "DELETE",
+        headers:{
+          "Content-Type": "application/json"
+        },
         credentials: "include",
       });
 
