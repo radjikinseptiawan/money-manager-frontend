@@ -6,7 +6,7 @@ export const GET = async (req: NextRequest) => {
     const code = req.nextUrl.searchParams.get("code");
 
     const response = await fetch(
-      `http://api.zeverial.online/users/input_otp?email=${email}&code=${code}`,
+      `https://api.zeverial.online/users/input_otp?email=${email}&code=${code}`,
       {
         method: "GET",
         headers: {

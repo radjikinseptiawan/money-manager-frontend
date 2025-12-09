@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 export async function POST(req:NextRequest){
         const cookie = req.headers.get("cookie") ?? ""
         const body = await req.json();
-        const response = await fetch("http://api.zeverial.online/users/register",{
+        const response = await fetch("https://api.zeverial.online/users/register",{
             method:"POST",
             headers:{
                 "Content-Type" : "application/json",

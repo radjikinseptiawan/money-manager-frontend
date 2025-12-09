@@ -6,7 +6,7 @@ export async function DELETE(req : NextRequest,context : {params : Promise<{ id 
     const session = (await cookieStore).toString();
     const {id} = await context.params;
 
-    const res = await fetch(`http://api.zeverial.online/transaction/${id}`,{
+    const res = await fetch(`https://api.zeverial.online/transaction/${id}`,{
         method:"DELETE",
         headers: {
           "x-api-key" : "6B224A9476D91EAF3175184AA4D21",

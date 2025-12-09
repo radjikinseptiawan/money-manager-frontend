@@ -6,7 +6,7 @@ export const POST =async(req:NextRequest)=>{
 
     const token = req.nextUrl.searchParams.get("token")
     const cookies = await req.headers.get("cookie") ?? ""
-    const response = await fetch(`http://api.zeverial.online/users/verify?token=${token}`,
+    const response = await fetch(`https://api.zeverial.online/users/verify?token=${token}`,
         {
           method: "GET",
           headers: { "x-api-key": "6B224A9476D91EAF3175184AA4D21", "Cookie" : cookies },

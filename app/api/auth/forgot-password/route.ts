@@ -4,7 +4,7 @@ export const GET = async(req : NextRequest)=>{
     const email = req.nextUrl.searchParams.get("email")
     const cookie = await req.headers.get("cookie") ?? "";
     try{
-        const response = await fetch(`http://api.zeverial.online/users/forgot-password?email=${email}`,{    
+        const response = await fetch(`https://api.zeverial.online/users/forgot-password?email=${email}`,{    
         method : "GET",
         headers: {
         "Content-Type" : "application/json",
