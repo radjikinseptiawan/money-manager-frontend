@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 
 export async function GET(req : NextRequest){
-    const cookie = req.headers.get("cookie")!;
-    const res = await fetch(`http://api.zeverial.online/transaction`, {
+    const res = await fetch(`https://api.zeverial.online/transaction`, {
         method: "GET",
         headers: { 
           "Content-Type": "application/json", 
