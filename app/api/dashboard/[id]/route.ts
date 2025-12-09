@@ -12,6 +12,7 @@ export async function DELETE(req : NextRequest,context : {params : Promise<{ id 
           "x-api-key" : "6B224A9476D91EAF3175184AA4D21",
           "Cookie" : session
         },
+        credentials:"include"
     })
 
     

@@ -6,8 +6,7 @@ export async function GET(req : NextRequest){
         method: "GET",
         headers: { 
           "Content-Type": "application/json", 
-          "x-api-key" : "6B224A9476D91EAF3175184AA4D21",
-          "Cookie" : cookie
+          "x-api-key" : "6B224A9476D91EAF3175184AA4D21"
         },
         credentials:"include"
     })
