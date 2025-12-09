@@ -116,7 +116,7 @@ export default function Page() {
         },
         credentials: "include",
       });
-
+      console.log(res)
       if (res.ok) {
         setTransaction((prev) =>
           prev
