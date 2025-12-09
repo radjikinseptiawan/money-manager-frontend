@@ -112,11 +112,13 @@ export default function Page() {
       const res = await fetch(`api/dashboard/${id}`, {
         method: "DELETE",
         headers:{
+          "x-api-key": "6B224A9476D91EAF3175184AA4D21",
           "Content-Type": "application/json"
         },
         credentials: "include",
       });
-      console.log(res)
+      const data = await res.json()
+            console.log(data)
       if (res.ok) {
         setTransaction((prev) =>
           prev
