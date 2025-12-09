@@ -7,7 +7,7 @@ export async function DELETE(
 ) {
   const cookieStore = cookies();
   const accessToken = (await cookieStore).get("access_token")?.value ?? "";
-  const id = req.nextUrl.searchParams.get("id")
+  const id = await context.params
 
   const res = await fetch(`https://api.zeverial.online/transaction/${id}`, {
     method: "DELETE",
