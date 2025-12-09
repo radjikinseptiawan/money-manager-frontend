@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from "next/server"
 
-export const POST =async(req:NextRequest,context : {params : {token : Promise<string>}})=>{
+export const POST =async(req:NextRequest)=>{
     try{
 
-    const {token} = context.params
+    const token = req.nextUrl.searchParams.get("token")
     const cookies = await req.headers.get("cookie") ?? ""
     const response = await fetch(`http://api.zeverial.online/users/verify?token=${token}`,
         {

@@ -51,7 +51,7 @@ export async function DELETE(req: Request){
     (await cookies()).set("access_token","",{
       httpOnly:true,
       secure:true,
-      sameSite:'lax',
+      sameSite:'none',
       path:"/",
       domain:".zeverial.online",
       maxAge:0
