@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function DELETE(req : NextRequest,context : {params : Promise<{ id : string}>}){
     const cookieStore = cookies();
-    const session = (await cookieStore).toString();
+    const session = (await cookieStore).get("access_token")?.value ?? "";
     const {id} = await context.params;
 
     const res = await fetch(`https://api.zeverial.online/transaction/${id}`,{
