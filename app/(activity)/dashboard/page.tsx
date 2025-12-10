@@ -109,7 +109,7 @@ export default function Page() {
 
   async function deleteTransaction(id: string) {
     try {
-      const res = await fetch(`api/dashboard/${id}`, {
+      const res = await fetch(`http://api.zeverial.online/transaction/${id}`, {
         method: "DELETE",
         headers:{
           "x-api-key": "6B224A9476D91EAF3175184AA4D21",

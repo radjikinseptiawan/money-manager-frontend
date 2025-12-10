@@ -30,11 +30,11 @@ export async function POST(req: Request) {
 
   const cookieStore = cookies();
   (await cookieStore).set("access_token", data.access_token.access_token, {
-    httpOnly: true,
-    secure: true,
-    sameSite: "none",
+    httpOnly: false,
+    secure: false,
+    sameSite: "lax",
     path: "/",
-    domain:".zeverial.online",
+    // domain:".zeverial.online",
     maxAge: 60 * 60 * 24
   });
 
@@ -49,11 +49,11 @@ export async function POST(req: Request) {
 
 export async function DELETE(req: Request){
     (await cookies()).set("access_token","",{
-      httpOnly:true,
-      secure:true,
-      sameSite:'none',
+      httpOnly:false,
+      secure:false,
+      sameSite:'lax',
       path:"/",
-      domain:".zeverial.online",
+      // domain:".zeverial.online",
       maxAge:0
     })
 
