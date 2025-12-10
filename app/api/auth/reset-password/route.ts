@@ -2,9 +2,9 @@ import { NextRequest, NextResponse } from "next/server"
 
 export const POST = async(req:NextRequest)=>{
     try{
-        const body = req.json()
+        const body = await req.json()
         const cookie = await req.headers.get("cookie") ?? ""
-        const response = await fetch(`https://api.zeverial.online/users/new_password`,{
+        const response = await fetch(`http://api.zeverial.online/users/new_password`,{
             method:"POST",
             body:JSON.stringify(body),
             credentials:"include",
