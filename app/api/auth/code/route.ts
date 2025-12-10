@@ -5,7 +5,7 @@ export const POST = async (req: NextRequest) => {
     const email = req.nextUrl.searchParams.get("email");
     const body = await req.json()
     const response = await fetch(
-      `http://api.zeverial.online/users/input_otp?email=${body.email}&code=${body.code}`,
+      `https://api.zeverial.online/users/input_otp?email=${body.email}&code=${body.code}`,
       {
         method: "POST",
         headers: {
