@@ -23,10 +23,15 @@ export function Code(){
         e.preventDefault()
         try{
             const response = await fetch("/api/auth/code",{
-                method:"GET",
+                method:"POST",
+                body:JSON.stringify({
+                    code,
+                    email:getEmail
+                })
             })
 
             const data = await response.json()
+            console.log(data)
             window.location.href = `/forgot-password/reset-password?email=${getEmail}&code=${code}`
             return data
         }catch(e){
