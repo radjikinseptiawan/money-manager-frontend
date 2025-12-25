@@ -7,8 +7,8 @@ export async function POST(req: Request) {
   if (!body) {
     return NextResponse.json({ success: false, message: 'No data provided' });
   }
-  console.log(body)
-  const response = await fetch("https://api.zeverial.onlines/users/login", {
+
+  const response = await fetch("https://api.zeverial.online/users/login", {
     method:"POST",
     headers:{
       "Content-Type": "application/json",
@@ -16,26 +16,16 @@ export async function POST(req: Request) {
     },
     body: JSON.stringify(body)
   });
-  console.log(response)
-  const data = await response.json();
-    
-  if (!data.access_token) {
-        const errorData = await response.json().catch(() => ({}));
-        console.log(errorData)
-        return NextResponse.json({ 
-            success: false, 
-            message: errorData.message || "Backend rejected request" 
-        }, { status: response.status });
-    }
 
-  //   if (!data.access_token) {
-  //   return NextResponse.json({
-  //     success: false,
-  //     message: "Login gagal, backend tidak kirim token",
-  //     backendMessage: data.message,
-  //     data:data
-  //   });
-  // }
+  const data = await response.json();
+
+  if (!data.access_token) {
+    return NextResponse.json({
+      success: false,
+      message: "Login gagal, backend tidak kirim token",
+      backendMessage: data.message
+    });
+  }
 
   const cookieStore = cookies();
   (await cookieStore).set("access_token", data.access_token.access_token, {
