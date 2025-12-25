@@ -8,7 +8,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ success: false, message: 'No data provided' });
   }
   console.log(body)
-  const response = await fetch("http://api.zeverial.onlines/users/login", {
+  const response = await fetch("https://api.zeverial.onlines/users/login", {
     method:"POST",
     headers:{
       "Content-Type": "application/json",

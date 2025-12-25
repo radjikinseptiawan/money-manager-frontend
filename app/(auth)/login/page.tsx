@@ -47,10 +47,11 @@ export default function Page(){
                 headers:{"Content-Type" : "application/json"},
                 body:JSON.stringify({username, password})
             })
+            const data = await response.json();
+            console.log(data)
             if(!response.ok){
                 alert("Server bermasalah!")
             }
-            const data = await response.json();
             router.push('/dashboard')
             return data
         }catch(e){
