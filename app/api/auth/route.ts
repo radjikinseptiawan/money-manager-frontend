@@ -19,7 +19,7 @@ export async function POST(req: Request) {
   console.log(response)
   const data = await response.json();
     
-  if (!response.ok) {
+  if (!data.access_token) {
         const errorData = await response.json().catch(() => ({}));
         console.log(errorData)
         return NextResponse.json({ 
@@ -28,14 +28,14 @@ export async function POST(req: Request) {
         }, { status: response.status });
     }
 
-    if (!data.access_token) {
-    return NextResponse.json({
-      success: false,
-      message: "Login gagal, backend tidak kirim token",
-      backendMessage: data.message,
-      data:data
-    });
-  }
+  //   if (!data.access_token) {
+  //   return NextResponse.json({
+  //     success: false,
+  //     message: "Login gagal, backend tidak kirim token",
+  //     backendMessage: data.message,
+  //     data:data
+  //   });
+  // }
 
   const cookieStore = cookies();
   (await cookieStore).set("access_token", data.access_token.access_token, {
