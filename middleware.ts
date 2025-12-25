@@ -5,15 +5,9 @@ export const config = {
   runtime:"nodejs",
   matcher: ['/dashboard/:path*']
 };
-<<<<<<< HEAD:middleware.ts
 export function middleware(req: NextRequest) {
   const token = req.cookies.get('access_token')?.value;
   console.log(token)
-=======
-export function proxy(req: NextRequest) {
-  const token = req.cookies.get('access_token');
-
->>>>>>> development:proxy.ts
   if (!token) {
     return NextResponse.redirect(new URL('/login', req.url));
   }

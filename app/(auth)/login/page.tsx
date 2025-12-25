@@ -8,11 +8,7 @@ import '../auth.css'
 import { useRouter } from "next/navigation"
 import UsernameInput from "@/app/component/usernameInput"
 
-<<<<<<< HEAD
 const url = `https://api.zeverial.online/users/login` 
-=======
-const url : string = 'https://zeverial-money.vercel.app/'
->>>>>>> development
 export default function Page(){
     const username = useAppSelector((state)=>state.accounts.username)
     const password = useAppSelector((state)=>state.accounts.password)
@@ -26,7 +22,6 @@ export default function Page(){
     const loginToAccount = async(e : FormEvent)=>{
         e.preventDefault()
         try{
-<<<<<<< HEAD
             if(!passwordRegex.test(password)){
                 alert("password salah!")
                 return
@@ -50,28 +45,14 @@ export default function Page(){
             const response = await fetch('/api/auth',{
                 method:"POST",
                 headers:{"Content-Type" : "application/json"},
-                body:JSON.stringify({username:username, password:password})
-=======
-            const response = await fetch(`${url}users/login`,{
-                method:"POST",
-                headers:{"Content-Type" : "application/json"},
-                body:JSON.stringify({
-                    username: username,
-                    password: password
-                }),
+                body:JSON.stringify({username, password})
             })
-            const data = await response.json()
-            console.log(data)
-            localStorage.setItem("access_token",data.access_token)            
-            await fetch('/api/auth',{
-                method:"POST",
-                headers:{"Content-Type" : "application/json"},
-                body:JSON.stringify({access_token : data.access_token})
->>>>>>> development
-            })
-
+            if(!response.ok){
+                alert("Server bermasalah!")
+            }
+            const data = await response.json();
             router.push('/dashboard')
-            return response
+            return data
         }catch(e){
             console.log(e)
         }

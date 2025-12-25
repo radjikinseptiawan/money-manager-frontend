@@ -7,8 +7,8 @@ export async function POST(req: Request) {
   if (!body) {
     return NextResponse.json({ success: false, message: 'No data provided' });
   }
-
-  const response = await fetch("https://api.zeverial.online/users/login", {
+  console.log(body)
+  const response = await fetch("http://api.zeverial.onlines/users/login", {
     method:"POST",
     headers:{
       "Content-Type": "application/json",
@@ -18,12 +18,12 @@ export async function POST(req: Request) {
   });
 
   const data = await response.json();
-
   if (!data.access_token) {
     return NextResponse.json({
       success: false,
       message: "Login gagal, backend tidak kirim token",
-      backendMessage: data.message
+      backendMessage: data.message,
+      data:data
     });
   }
 
