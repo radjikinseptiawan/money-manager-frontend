@@ -42,18 +42,33 @@ export default function Page() {
   const [loading, setLoading] = useState(true);
   const [open, setOpen] = useState(false);
 
+<<<<<<< HEAD
   useLayoutEffect(()=>{
         document.body.style.background = "#0d1117"    
         return ()=> {document.body.style.background = ""}  
     },[])
+=======
+  const deleteTransaction = async(item : string)=>{
+    try{
+      const response = await fetch(`$http://localhost:3000/transaction/${item}`,{
+        method:"DELETE",
+        credentials:"include"
+      })
+>>>>>>> development
 
   const formattedMoney = (n: any) => new Intl.NumberFormat("id-ID").format(n ?? 0);
 
   async function fetchData() {
     try {
+<<<<<<< HEAD
       setLoading(true);
       const res = await fetch(`api/dashboard`, {
         method:"GET",
+=======
+      const response = await fetch(`http://localhost:3000/transaction`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+>>>>>>> development
         credentials: "include",
         headers:{
           "Content-Type": "application/json",
@@ -78,7 +93,11 @@ export default function Page() {
   async function addData(e: FormEvent) {
     e.preventDefault();
     try {
+<<<<<<< HEAD
       const res = await fetch(`api/dashboard`, {
+=======
+      const response = await fetch(`http://localhost:3000/transaction`, {
+>>>>>>> development
         method: "POST",
         credentials: "include",
         headers:{
