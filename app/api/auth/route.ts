@@ -16,7 +16,7 @@ export async function POST(req: Request) {
     },
     body: JSON.stringify(body)
   });
-
+  console.log(response)
   const data = await response.json();
   if (!data.access_token) {
     return NextResponse.json({
