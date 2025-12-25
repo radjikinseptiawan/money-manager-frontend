@@ -18,7 +18,17 @@ export async function POST(req: Request) {
   });
   console.log(response)
   const data = await response.json();
-  if (!data.access_token) {
+    
+  if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        console.log(errorData)
+        return NextResponse.json({ 
+            success: false, 
+            message: errorData.message || "Backend rejected request" 
+        }, { status: response.status });
+    }
+
+    if (!data.access_token) {
     return NextResponse.json({
       success: false,
       message: "Login gagal, backend tidak kirim token",
